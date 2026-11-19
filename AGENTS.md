@@ -45,7 +45,7 @@
 - Registry namespaces verified clean (npm + GitHub org + .com + .dev, 2026-11-15): `cdeck` (GitHub org `cdeck`, repo `centrosof/CDeck`), **npm `cdeckmcp`** for the MCP package (note: `cdeck-mcp` is taken — use no hyphen). `cdeck.com` and the bare GitHub user handle are taken — do not rely on them.
 - Identifiers: appId `dev.cdeck.app`, userData `%APPDATA%\CDeck`, preload bridge `window.cdeck`, API type `CDeckApi`, env `CDECK_SELFTEST`, scrcpy window title `CDeck :: <serial>`.
 - Settings migration: a legacy `droidlink.json` in userData is copied to `cdeck.json` on first boot (see `store.ts`).
-- The project folder on disk is still `Documents/droidlink`; renaming it is pending user action (editors may hold paths).
+- The project folder on disk was renamed `Documents/droidlink` → `Documents/cdeck` (2026-11-19); no code referenced it, and the probe/test harness paths were made machine-independent in the same change.
 
 ## Known environment facts (verified 2026-11-13)
 - User Wi-Fi: SSID `GENESIS HOSTELS`, Public profile, **client isolation ON** → wireless adb impossible; USB only. Phone advertises `adb-XSKZSGFA6DUGTWBI` @ `192.168.100.5` but unreachable.
