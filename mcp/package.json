@@ -1,0 +1,27 @@
+{
+  "name": "cdeckmcp",
+  "version": "0.1.0",
+  "description": "MCP server that lets AI agents drive real Android devices through CDeck (adb over USB/Wi-Fi).",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "cdeckmcp": "dist/index.js"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "^2.4.0",
+    "@modelcontextprotocol/server-legacy": "^2.4.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6"
+  }
+}

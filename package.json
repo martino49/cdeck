@@ -1,0 +1,86 @@
+{
+  "name": "cdeck",
+  "version": "0.1.0",
+  "description": "Android development on your real phone instead of the emulator: wireless adb, scrcpy mirroring, reverse tunnels, auto-reconnect watchdog.",
+  "license": "MIT",
+  "main": "./out/main/index.js",
+  "bin": {
+    "cdeck": "cli/cdeck.mjs"
+  },
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "start": "electron-vite preview",
+    "package": "electron-vite build && electron-builder --win --config",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.node.json",
+    "mcp:build": "npm --prefix mcp run build",
+    "mcp:start": "node mcp/dist/index.js",
+    "mcp:test": "node mcp/test-protocol.mjs",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@vitejs/plugin-react": "latest",
+    "electron": "latest",
+    "electron-builder": "latest",
+    "electron-vite": "latest",
+    "typescript": "latest",
+    "vite": "latest"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.5",
+    "@yume-chan/adb": "^2.6.4",
+    "@yume-chan/adb-server-node-tcp": "^2.5.2",
+    "@yume-chan/scrcpy": "^2.3.0",
+    "@yume-chan/scrcpy-decoder-webcodecs": "^2.5.3",
+    "@yume-chan/stream-extra": "^2.6.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "electron-log": "^5.4.4",
+    "lucide-react": "^1.72.0",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-virtuoso": "^4.18.22",
+    "sonner": "^2.0.8",
+    "tailwind-merge": "^3.7.0",
+    "tailwindcss": "^4.3.5",
+    "tinykeys": "^4.0.1",
+    "zod": "^4.6.7"
+  },
+  "build": {
+    "appId": "dev.cdeck.app",
+    "productName": "CDeck",
+    "copyright": "MIT",
+    "icon": "build/assets/icon.ico",
+    "files": [
+      "out/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "build/assets",
+        "to": "assets",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": "nsis",
+      "artifactName": "CDeck-${version}-setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": false,
+      "createStartMenuShortcut": true,
+      "shortcutName": "CDeck"
+    }
+  }
+}
