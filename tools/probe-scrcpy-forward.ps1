@@ -1,6 +1,16 @@
 $ErrorActionPreference = 'Continue'
-$adb = "C:\Users\USER\AppData\Local\Microsoft\WinGet\Packages\Google.PlatformTools_Microsoft.Winget.Source_8wekyb3d8bbwe\platform-tools\adb.exe"
-$jar = "C:\Users\USER\AppData\Roaming\cdeck\bin\scrcpy\scrcpy-win64-v5.0.1\scrcpy-server"
+if ($env:CDECK_ADB) {
+  $adb = $env:CDECK_ADB
+} else {
+  $cmd = Get-Command adb -ErrorAction SilentlyContinue
+  $adb = if ($cmd) { $cmd.Source } else { Join-Path $env:APPDATA 'CDeck\bin\platform-tools\adb.exe' }
+}
+if (-not (Test-Path $adb)) { Write-Output "adb not found: $adb (set CDECK_ADB or run CDeck once)"; exit 1 }
+$scrcpyRoot = Join-Path $env:APPDATA 'CDeck\bin\scrcpy'
+$jarFile = Get-ChildItem -Path $scrcpyRoot -Filter 'scrcpy-server*' -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+if (-not $jarFile) { Write-Output "scrcpy-server not found under $scrcpyRoot - run CDeck once so it downloads tools"; exit 1 }
+$jar = $jarFile.FullName
+$stderrLog = Join-Path $env:TEMP 'probe-fwd-err.txt'
 
 $devLines = (& $adb devices) -split "`r?`n"
 $devLine = $devLines | Where-Object { $_ -match "\sdevice$" -and $_ -notmatch "^List of" } | Select-Object -First 1
@@ -23,7 +33,7 @@ Write-Output "=== forward --list ==="
 
 $argstr = "CLASSPATH=$remote app_process / com.genymobile.scrcpy.Server 5.0.1 scid=$scid tunnel_forward=true video=true audio=false control=true send_device_meta=false video_codec=h264 log_level=warn"
 Write-Output "server cmd: $argstr"
-$proc = Start-Process -FilePath $adb -ArgumentList @('-s', $serial, 'shell', $argstr) -PassThru -WindowStyle Hidden -RedirectStandardError "C:\Users\USER\AppData\Local\Temp\opencode\probe-fwd-err.txt"
+$proc = Start-Process -FilePath $adb -ArgumentList @('-s', $serial, 'shell', $argstr) -PassThru -WindowStyle Hidden -RedirectStandardError $stderrLog
 Start-Sleep -Seconds 3
 
 function Read-Bytes($sock, $n) {
@@ -70,4 +80,4 @@ try { Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue } catch {}
 & $adb -s $serial forward --remove "tcp:27183" | Out-Null
 & $adb -s $serial shell rm -f $remote | Out-Null
 Write-Output "=== server stderr ==="
-Get-Content "C:\Users\USER\AppData\Local\Temp\opencode\probe-fwd-err.txt" -ErrorAction SilentlyContinue | Select-Object -Last 8
+Get-Content $stderrLog -ErrorAction SilentlyContinue | Select-Object -Last 8

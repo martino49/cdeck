@@ -2,8 +2,6 @@
 
 **One command. The whole tool.** Once this repo's `bin` is on your PATH (or after installing), `cdeck` is the only command you need to remember:
 
-**One command. The whole tool.** Once this repo's `bin` is on your PATH (or after installing), `cdeck` is the only command you need to remember:
-
 ```powershell
 cdeck                 # build if needed → launch the app → quick self-test
 cdeck wireless         # connect over Wi-Fi — re-discovers the port every time (ports rotate!)
@@ -18,7 +16,7 @@ cdeck mcp              # run the MCP server for AI agents (Claude, Cursor, openc
 Not on PATH yet? Run it straight from the repo:
 
 ```powershell
-cd C:\Users\USER\Documents\droidlink
+cd <path to this repo>
 .\bin\cdeck.cmd doctor
 ```
 

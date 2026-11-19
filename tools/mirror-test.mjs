@@ -1,6 +1,8 @@
 import { writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 
-const OUT = process.env.CDECK_TEST_OUT || process.argv[2] || 'C:/Users/USER/AppData/Local/Temp/opencode/mirror-test-result.json'
+const OUT = process.env.CDECK_TEST_OUT || process.argv[2] || join(tmpdir(), 'mirror-test-result.json')
 const PORT = Number(process.env.CDECK_TEST_PORT || 9333)
 const HARD = setTimeout(() => {
   writeFileSync(OUT, JSON.stringify({ fatal: 'HARD TIMEOUT' }, null, 1))

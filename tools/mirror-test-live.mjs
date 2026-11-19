@@ -1,6 +1,8 @@
 import { writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 
-const OUT = 'C:/Users/USER/AppData/Local/Temp/opencode/embedtest-result.json'
+const OUT = process.env.CDECK_TEST_OUT || join(tmpdir(), 'embedtest-result.json')
 const HARD = setTimeout(() => {
   writeFileSync(OUT, JSON.stringify({ fatal: 'HARD TIMEOUT' }, null, 1))
   process.exit(2)
