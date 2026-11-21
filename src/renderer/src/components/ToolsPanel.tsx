@@ -88,8 +88,8 @@ export function ToolsPanel({ tools, refresh }: { tools: ToolInfo[]; refresh: () 
         <Button
           size="sm"
           onClick={async () => {
-            const res = await win.selftest.run()
-            setSelfResult(`${res.code === 0 ? 'PASS' : 'FAIL'} — report at ${res.path}`)
+            const res = (await win.selftest.run()) as { code: number; path: string; summary: string }
+            setSelfResult(`${res.code === 0 ? 'PASS' : 'FAIL'} — ${res.summary}`)
             showToast(res.code === 0 ? 'success' : 'error', res.code === 0 ? 'Self-test passed' : 'Self-test reported failures', res.path)
           }}
         >

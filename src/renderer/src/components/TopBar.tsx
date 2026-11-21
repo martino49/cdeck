@@ -1,4 +1,4 @@
-import { Play, RefreshCw, Smartphone, Usb, Wifi } from 'lucide-react'
+import { Bug, Play, RefreshCw, Smartphone, Usb, Wifi } from 'lucide-react'
 import type { DeviceInfo } from '@shared/types'
 import { Badge, Button } from './ui'
 
@@ -64,6 +64,17 @@ export function TopBar({
 
       <Button variant="ghost" size="sm" onClick={onRefresh} title="Refresh (F5)">
         <RefreshCw className="h-3.5 w-3.5" />
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        title="Toggle DevTools (F12)"
+        onClick={() => {
+          const deck = window as unknown as { cdeck?: { devtools?: { toggle: () => Promise<boolean> } } }
+          void deck.cdeck?.devtools?.toggle()
+        }}
+      >
+        <Bug className="h-3.5 w-3.5" />
       </Button>
       <Button variant="primary" onClick={onStartSession} disabled={!ready || busy} title="Tunnels + mirror + logcat in one click">
         <Play className="h-3.5 w-3.5" />

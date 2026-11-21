@@ -19,6 +19,13 @@ declare global {
       onTrayAction: (cb: (d: { action: string }) => void) => () => void
       onMirrorPort: (cb: (port: MessagePort) => void) => () => void
       paths: { forFile: (file: File) => string | null }
+      selftest: { run: () => Promise<{ code: number; path: string; summary: string }> }
+      devtools: {
+        open: () => Promise<void>
+        close: () => Promise<void>
+        toggle: () => Promise<boolean>
+        isOpen: () => Promise<boolean>
+      }
       onAutomationStep: (cb: (r: { index: number; type: string; ok: boolean; detail: string; at: number }) => void) => () => void
       onAutomationSuite: (cb: (r: import('@shared/types').SuiteResult) => void) => () => void
     }
